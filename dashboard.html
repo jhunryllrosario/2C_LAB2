@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard</title>
+    <style>
+      :root {
+        --bg: #0f172a;
+        --bg-2: #111827;
+        --panel: rgba(15, 23, 42, 0.8);
+        --panel-soft: rgba(15, 23, 42, 0.55);
+        --card: rgba(255, 255, 255, 0.04);
+        --line: rgba(148, 163, 184, 0.2);
+        --text: #e5eefb;
+        --muted: #a9b5d1;
+        --primary: #7c3aed;
+        --accent: #38bdf8;
+        --success: #22c55e;
+        --warning: #f59e0b;
+        --shadow: 0 28px 60px rgba(15, 23, 42, 0.45);
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background:
+          radial-gradient(circle at top left, rgba(124, 58, 237, 0.22), transparent 28%),
+          radial-gradient(circle at bottom right, rgba(56, 189, 248, 0.18), transparent 22%),
+          linear-gradient(135deg, var(--bg), var(--bg-2));
+        color: var(--text);
+      }
+
+      .app-shell {
+        width: min(1280px, 95vw);
+        margin: 28px auto;
+        min-height: calc(100vh - 56px);
+        display: grid;
+        grid-template-columns: 260px 1fr;
+        border: 1px solid var(--line);
+        border-radius: 28px;
+        overflow: hidden;
+        background: rgba(15, 23, 42, 0.52);
+        backdrop-filter: blur(14px);
+        box-shadow: var(--shadow);
+      }
+
+      .sidebar {
+        background: rgba(15, 23, 42, 0.8);
+        border-right: 1px solid var(--line);
+        padding: 26px 20px;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        margin-bottom: 30px;
+      }
+
+      .brand-badge {
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
+        display: grid;
+        place-items: center;
+        background: linear-gradient(135deg, var(--primary), var(--accent));
+        box-shadow: 0 12px 24px rgba(124, 58, 237, 0.35);
+      }
+
+      .nav {
+        display: grid;
+        gap: 10px;
+      }
+
+      .nav a {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: var(--muted);
+        text-decoration: none;
+        padding: 12px 14px;
+        border-radius: 12px;
+        transition: 0.2s ease;
+      }
+
+      .nav a.active,
+      .nav a:hover {
+        color: var(--text);
+        background: rgba(124, 58, 237, 0.16);
+        border: 1px solid rgba(124, 58, 237, 0.3);
+      }
+
+      .nav .icon {
+        width: 28px;
+        height: 28px;
+        border-radius: 8px;
+        display: grid;
+        place-items: center;
+        background: rgba(255, 255, 255, 0.04);
+      }
+
+      .sidebar-card {
+        margin-top: 24px;
+        padding: 16px;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: linear-gradient(180deg, rgba(56, 189, 248, 0.08), rgba(124, 58, 237, 0.06));
+      }
+
+      .sidebar-card p {
+        margin: 0 0 10px;
+        color: var(--muted);
+        line-height: 1.5;
+      }
+
+      .sidebar-card button {
+        border: none;
+        border-radius: 10px;
+        padding: 10px 14px;
+        background: linear-gradient(135deg, var(--primary), var(--accent));
+        color: #fff;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .main {
+        padding: 26px;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 24px;
+      }
+
+      .eyebrow {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.78rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        margin: 8px 0 0;
+        font-size: clamp(2rem, 4vw, 2.7rem);
+        letter-spacing: -0.05em;
+      }
+
+      .user-panel {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 12px;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.03);
+      }
+
+      .avatar {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        font-weight: 700;
+        background: linear-gradient(135deg, var(--primary), var(--accent));
+      }
+
+      .user-meta {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.3;
+      }
+
+      .user-name {
+        font-weight: 700;
+      }
+
+      .user-email {
+        color: var(--muted);
+        font-size: 0.8rem;
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 18px;
+        margin-bottom: 24px;
+      }
+
+      .stat-card {
+        background: rgba(15, 23, 42, 0.72);
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 18px 18px 16px;
+      }
+
+      .stat-card .label {
+        color: var(--muted);
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .stat-card .value {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        margin-top: 12px;
+      }
+
+      .stat-card strong {
+        font-size: 2rem;
+        letter-spacing: -0.06em;
+      }
+
+      .stat-card .trend {
+        font-size: 0.8rem;
+        padding: 6px 8px;
+        border-radius: 999px;
+        background: rgba(34, 197, 94, 0.12);
+        color: #9ae6b4;
+      }
+
+      .content-grid {
+        display: grid;
+        grid-template-columns: 1.4fr 0.8fr;
+        gap: 18px;
+        margin-bottom: 18px;
+      }
+
+      .panel {
+        background: rgba(15, 23, 42, 0.72);
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        padding: 18px;
+      }
+
+      .panel-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 20px;
+      }
+
+      .panel-title {
+        margin: 0;
+        font-size: 1.15rem;
+      }
+
+      .chip {
+        padding: 7px 10px;
+        background: rgba(124, 58, 237, 0.12);
+        color: #ddd6fe;
+        border-radius: 999px;
+        font-size: 0.75rem;
+      }
+
+      .mini-chart {
+        display: flex;
+        align-items: end;
+        gap: 12px;
+        height: 180px;
+        padding-top: 18px;
+      }
+
+      .bar {
+        width: 100%;
+        border-radius: 10px 10px 0 0;
+        background: linear-gradient(180deg, var(--accent), var(--primary));
+        opacity: 0.85;
+      }
+
+      .activity-list {
+        display: grid;
+        gap: 16px;
+      }
+
+      .activity-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+      }
+
+      .activity-item:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+      }
+
+      .activity-meta {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .activity-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 12px;
+        display: grid;
+        place-items: center;
+        background: rgba(124, 58, 237, 0.12);
+      }
+
+      .activity-text strong {
+        display: block;
+      }
+
+      .activity-text span {
+        color: var(--muted);
+        font-size: 0.8rem;
+      }
+
+      .status {
+        padding: 6px 10px;
+        border-radius: 999px;
+        font-size: 0.76rem;
+        background: rgba(34, 197, 94, 0.12);
+        color: #9ae6b4;
+      }
+
+      .table-panel {
+        padding: 18px;
+        background: rgba(15, 23, 42, 0.72);
+        border: 1px solid var(--line);
+        border-radius: 20px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      th, td {
+        text-align: left;
+        padding: 14px 12px;
+        border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+      }
+
+      th {
+        color: var(--muted);
+        font-size: 0.8rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        font-weight: 600;
+      }
+
+      .team-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .team-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--success);
+      }
+
+      .logout-btn {
+        border: 1px solid rgba(255,255,255,0.12);
+        background: transparent;
+        color: var(--text);
+        border-radius: 10px;
+        padding: 10px 14px;
+        cursor: pointer;
+      }
+
+      @media (max-width: 980px) {
+        .app-shell {
+          grid-template-columns: 1fr;
+        }
+
+        .sidebar {
+          border-right: none;
+          border-bottom: 1px solid var(--line);
+        }
+
+        .stats-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .content-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 620px) {
+        .stats-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .topbar {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-badge">✦</div>
+          <span>NovaFlow</span>
+        </div>
+
+        <nav class="nav">
+          <a class="active" href="#"><span class="icon">⌂</span> Dashboard</a>
+          <a href="#"><span class="icon">◎</span> Analytics</a>
+          <a href="#"><span class="icon">▣</span> Projects</a>
+          <a href="#"><span class="icon">◫</span> Messages</a>
+          <a href="#"><span class="icon">⚙</span> Settings</a>
+        </nav>
+
+        <div class="sidebar-card">
+          <p>Need a quick update on the weekly goals?</p>
+          <button type="button">View report</button>
+        </div>
+      </aside>
+
+      <main class="main">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Overview</p>
+            <h1>Dashboard</h1>
+          </div>
+
+          <div class="user-panel">
+            <div class="avatar" id="avatarInitial">U</div>
+            <div class="user-meta">
+              <span class="user-name" id="userName">User</span>
+              <span class="user-email" id="userEmail">user@example.com</span>
+            </div>
+            <button class="logout-btn" id="logoutBtn" type="button">Log out</button>
+          </div>
+        </header>
+
+        <section class="stats-grid">
+          <article class="stat-card">
+            <div class="label">Revenue</div>
+            <div class="value">
+              <strong>$24.8K</strong>
+              <span class="trend">+12.4%</span>
+            </div>
+          </article>
+
+          <article class="stat-card">
+            <div class="label">Orders</div>
+            <div class="value">
+              <strong>1,842</strong>
+              <span class="trend">+8.1%</span>
+            </div>
+          </article>
+
+          <article class="stat-card">
+            <div class="label">Conversion</div>
+            <div class="value">
+              <strong>7.36%</strong>
+              <span class="trend">+2.6%</span>
+            </div>
+          </article>
+
+          <article class="stat-card">
+            <div class="label">Retention</div>
+            <div class="value">
+              <strong>89.2%</strong>
+              <span class="trend">+4.3%</span>
+            </div>
+          </article>
+        </section>
+
+        <section class="content-grid">
+          <div class="panel">
+            <div class="panel-header">
+              <h2 class="panel-title">Performance</h2>
+              <span class="chip">This month</span>
+            </div>
+            <div class="mini-chart" aria-label="Performance chart">
+              <div class="bar" style="height: 28%"></div>
+              <div class="bar" style="height: 40%"></div>
+              <div class="bar" style="height: 52%"></div>
+              <div class="bar" style="height: 70%"></div>
+              <div class="bar" style="height: 62%"></div>
+              <div class="bar" style="height: 86%"></div>
+              <div class="bar" style="height: 100%"></div>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-header">
+              <h2 class="panel-title">Recent activity</h2>
+              <span class="chip">Live</span>
+            </div>
+            <div class="activity-list">
+              <div class="activity-item">
+                <div class="activity-meta">
+                  <div class="activity-icon">✦</div>
+                  <div class="activity-text">
+                    <strong>New sale</strong>
+                    <span>2 hours ago</span>
+                  </div>
+                </div>
+                <span class="status">Paid</span>
+              </div>
+
+              <div class="activity-item">
+                <div class="activity-meta">
+                  <div class="activity-icon">↗</div>
+                  <div class="activity-text">
+                    <strong>Campaign launched</strong>
+                    <span>6 hours ago</span>
+                  </div>
+                </div>
+                <span class="status">Running</span>
+              </div>
+
+              <div class="activity-item">
+                <div class="activity-meta">
+                  <div class="activity-icon">✓</div>
+                  <div class="activity-text">
+                    <strong>Client approval</strong>
+                    <span>Today</span>
+                  </div>
+                </div>
+                <span class="status">Complete</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div class="table-panel">
+          <div class="panel-header">
+            <h2 class="panel-title">Team overview</h2>
+            <span class="chip">Updated now</span>
+          </div>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Project</th>
+                <th>Owner</th>
+                <th>Status</th>
+                <th>Progress</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Website refresh</td>
+                <td><span class="team-badge"><span class="team-dot"></span>Alex Ray</span></td>
+                <td>On track</td>
+                <td>82%</td>
+              </tr>
+              <tr>
+                <td>Mobile app</td>
+                <td><span class="team-badge"><span class="team-dot"></span>Priya Shah</span></td>
+                <td>Review</td>
+                <td>64%</td>
+              </tr>
+              <tr>
+                <td>CRM upgrade</td>
+                <td><span class="team-badge"><span class="team-dot"></span>Daniel Kim</span></td>
+                <td>Blocked</td>
+                <td>38%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </main>
+    </div>
+
+    <script>
+      const userData = JSON.parse(localStorage.getItem('novaUser') || 'null');
+
+      if (!userData) {
+        window.location.href = 'login.html';
+      } else {
+        const userName = document.getElementById('userName');
+        const userEmail = document.getElementById('userEmail');
+        const avatarInitial = document.getElementById('avatarInitial');
+        const name = (userData.displayName || userData.email.split('@')[0] || 'User').trim();
+
+        userName.textContent = name.charAt(0).toUpperCase() + name.slice(1);
+        userEmail.textContent = userData.email;
+        avatarInitial.textContent = name.charAt(0).toUpperCase();
+      }
+
+      document.getElementById('logoutBtn').addEventListener('click', () => {
+        localStorage.removeItem('novaUser');
+        window.location.href = 'login.html';
+      });
+    </script>
+  </body>
+</html>
