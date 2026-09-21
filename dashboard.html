@@ -591,9 +591,10 @@
         const userName = document.getElementById('userName');
         const userEmail = document.getElementById('userEmail');
         const avatarInitial = document.getElementById('avatarInitial');
-        const name = (userData.displayName || userData.email.split('@')[0] || 'User').trim();
+        const safeName = (userData.displayName || userData.email.split('@')[0] || 'User').trim();
+        const name = safeName.charAt(0).toUpperCase() + safeName.slice(1);
 
-        userName.textContent = name.charAt(0).toUpperCase() + name.slice(1);
+        userName.textContent = name;
         userEmail.textContent = userData.email;
         avatarInitial.textContent = name.charAt(0).toUpperCase();
       }

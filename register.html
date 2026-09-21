@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Modern Login</title>
+    <title>Register</title>
     <style>
       :root {
         --bg-dark: #0f172a;
@@ -20,9 +20,7 @@
         --shadow: 0 30px 60px rgba(15, 23, 42, 0.45);
       }
 
-      * {
-        box-sizing: border-box;
-      }
+      * { box-sizing: border-box; }
 
       body {
         margin: 0;
@@ -39,7 +37,7 @@
 
       .page-shell {
         width: min(1100px, 92vw);
-        min-height: 700px;
+        min-height: 760px;
         display: grid;
         grid-template-columns: 1.1fr 0.9fr;
         background: rgba(15, 23, 42, 0.5);
@@ -177,66 +175,6 @@
         color: var(--muted);
       }
 
-      .social-login {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 12px;
-      }
-
-      .social-btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        border: 1px solid var(--border);
-        background: rgba(255, 255, 255, 0.02);
-        color: var(--text);
-        border-radius: 12px;
-        min-height: 48px;
-        font-size: 0.95rem;
-        cursor: pointer;
-        transition: transform 0.2s ease, border-color 0.2s ease;
-      }
-
-      .social-btn:hover {
-        transform: translateY(-1px);
-        border-color: rgba(124, 58, 237, 0.5);
-      }
-
-      .social-btn .dot {
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        display: inline-block;
-      }
-
-      .google .dot {
-        background: #ea4335;
-      }
-
-      .github .dot {
-        background: #f5f5f5;
-      }
-
-      .divider {
-        display: grid;
-        grid-template-columns: 1fr auto 1fr;
-        align-items: center;
-        gap: 12px;
-        margin: 24px 0 18px;
-        color: var(--muted);
-        font-size: 0.8rem;
-        text-transform: uppercase;
-        letter-spacing: 0.12em;
-      }
-
-      .divider::before,
-      .divider::after {
-        content: "";
-        height: 1px;
-        background: rgba(255, 255, 255, 0.08);
-      }
-
       .form-group {
         margin-bottom: 18px;
       }
@@ -290,37 +228,6 @@
         cursor: pointer;
       }
 
-      .row-between {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 10px;
-        margin: 8px 0 22px;
-        font-size: 0.85rem;
-      }
-
-      .checkbox {
-        display: inline-flex;
-        align-items: center;
-        gap: 10px;
-        color: var(--muted);
-      }
-
-      .checkbox input {
-        accent-color: var(--primary);
-        width: 16px;
-        height: 16px;
-      }
-
-      .alt-link {
-        color: #c4b5fd;
-        text-decoration: none;
-      }
-
-      .alt-link:hover {
-        text-decoration: underline;
-      }
-
       .submit-btn {
         width: 100%;
         border: none;
@@ -372,15 +279,6 @@
         .login-card {
           padding: 22px 18px 18px;
         }
-
-        .social-login {
-          grid-template-columns: 1fr;
-        }
-
-        .row-between {
-          flex-direction: column;
-          align-items: flex-start;
-        }
       }
     </style>
   </head>
@@ -393,10 +291,10 @@
         </div>
 
         <div class="hero-content">
-          <span class="eyebrow">Welcome back</span>
-          <h1>Smart tools for your next big move.</h1>
+          <span class="eyebrow">Create account</span>
+          <h1>Start your next chapter with confidence.</h1>
           <p class="hero-copy">
-            Stay connected to your workspace, manage projects, and keep your team moving with real-time insights.
+            Build your workspace, track your success, and move your projects forward from one place.
           </p>
 
           <div class="stats">
@@ -415,18 +313,19 @@
       <section class="login-panel">
         <div class="login-card">
           <div class="login-header">
-            <h2>Sign in</h2>
-            <p>Use your account to continue</p>
+            <h2>Register</h2>
+            <p>Create your free account</p>
           </div>
 
-          <div class="social-login">
-            <button class="social-btn google" type="button"><span class="dot"></span> Google</button>
-            <button class="social-btn github" type="button"><span class="dot"></span> GitHub</button>
-          </div>
+          <form id="registerForm">
+            <div class="form-group">
+              <label for="fullName">Full name</label>
+              <div class="input-wrap">
+                <span class="input-icon">👤</span>
+                <input id="fullName" type="text" placeholder="Your full name" required />
+              </div>
+            </div>
 
-          <div class="divider">or</div>
-
-          <form id="loginForm">
             <div class="form-group">
               <label for="email">Email address</label>
               <div class="input-wrap">
@@ -439,72 +338,91 @@
               <label for="password">Password</label>
               <div class="input-wrap">
                 <span class="input-icon">🔒</span>
-                <input id="password" type="password" placeholder="Enter your password" required />
-                <button class="toggle-password" type="button" aria-label="Toggle password visibility">Show</button>
+                <input id="password" type="password" placeholder="Create a password" required />
+                <button class="toggle-password" type="button" data-target="password">Show</button>
               </div>
             </div>
 
-            <div class="row-between">
-              <label class="checkbox">
-                <input type="checkbox" />
-                <span>Remember me</span>
-              </label>
-              <a class="alt-link" href="#">Forgot password?</a>
+            <div class="form-group">
+              <label for="confirmPassword">Confirm password</label>
+              <div class="input-wrap">
+                <span class="input-icon">🔐</span>
+                <input id="confirmPassword" type="password" placeholder="Repeat your password" required />
+                <button class="toggle-password" type="button" data-target="confirmPassword">Show</button>
+              </div>
             </div>
 
-            <button class="submit-btn" type="submit">Sign in</button>
+            <button class="submit-btn" type="submit">Create account</button>
           </form>
 
           <div class="signup">
-            Don’t have an account? <a href="register.html">Create one</a>
+            Already have an account? <a href="login.html">Sign in</a>
           </div>
         </div>
       </section>
     </main>
 
     <script>
+      const registerForm = document.getElementById('registerForm');
       const passwordInput = document.getElementById('password');
-      const toggleButton = document.querySelector('.toggle-password');
-      const loginForm = document.getElementById('loginForm');
+      const confirmPasswordInput = document.getElementById('confirmPassword');
 
-      if (localStorage.getItem('novaUser')) {
-        window.location.href = 'dashboard.html';
-      }
-
-      toggleButton.addEventListener('click', () => {
-        const isPassword = passwordInput.type === 'password';
-        passwordInput.type = isPassword ? 'text' : 'password';
-        toggleButton.textContent = isPassword ? 'Hide' : 'Show';
+      document.querySelectorAll('.toggle-password').forEach((button) => {
+        button.addEventListener('click', () => {
+          const input = document.getElementById(button.dataset.target);
+          const isHidden = input.type === 'password';
+          input.type = isHidden ? 'text' : 'password';
+          button.textContent = isHidden ? 'Hide' : 'Show';
+        });
       });
 
-      loginForm.addEventListener('submit', (event) => {
+      registerForm.addEventListener('submit', (event) => {
         event.preventDefault();
 
+        const fullName = document.getElementById('fullName').value.trim();
         const email = document.getElementById('email').value.trim();
-        const password = document.getElementById('password').value.trim();
+        const password = passwordInput.value.trim();
+        const confirmPassword = confirmPasswordInput.value.trim();
 
-        if (!email || !password) {
-          alert('Please enter both email and password.');
+        if (!fullName || !email || !password || !confirmPassword) {
+          alert('Please complete all fields.');
+          return;
+        }
+
+        if (password.length < 6) {
+          alert('Password must be at least 6 characters long.');
+          return;
+        }
+
+        if (password !== confirmPassword) {
+          alert('Passwords do not match.');
           return;
         }
 
         const users = JSON.parse(localStorage.getItem('novaUsers') || '[]');
-        const userRecord = users.find(
-          (user) => user.email.toLowerCase() === email.toLowerCase() && user.password === password
-        );
+        const emailExists = users.some((user) => user.email.toLowerCase() === email.toLowerCase());
 
-        if (!userRecord) {
-          alert('Invalid email or password. Please check your account or register first.');
+        if (emailExists) {
+          alert('This email is already registered. Please sign in instead.');
           return;
         }
 
-        const user = {
-          email: userRecord.email,
-          displayName: userRecord.displayName || userRecord.fullName.split(' ')[0],
-          loggedInAt: new Date().toISOString()
+        const newUser = {
+          fullName,
+          displayName: fullName.split(' ')[0],
+          email,
+          password,
+          createdAt: new Date().toISOString()
         };
 
-        localStorage.setItem('novaUser', JSON.stringify(user));
+        users.push(newUser);
+        localStorage.setItem('novaUsers', JSON.stringify(users));
+        localStorage.setItem('novaUser', JSON.stringify({
+          email: newUser.email,
+          displayName: newUser.displayName,
+          loggedInAt: new Date().toISOString()
+        }));
+
         window.location.href = 'dashboard.html';
       });
     </script>
